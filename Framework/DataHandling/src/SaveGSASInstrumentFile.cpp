@@ -254,7 +254,7 @@ ChopperConfiguration::parseStringUnsignedInt(const string &instring) const {
   vector<unsigned int> vecinteger;
   for (auto &str : strs) {
     if (str.size() > 0) {
-      int item = atoi(str.c_str());
+      int item = std::stoi(str.c_str());
       if (item < 0) {
         throw runtime_error(
             "Found negative number in a string for unsigned integers.");
@@ -422,7 +422,7 @@ void SaveGSASInstrumentFile::processProperties() {
   m_2theta = getProperty("TwoTheta");
   m_L2 = getProperty("L2");
   string freqtempstr = getProperty("ChopperFrequency");
-  m_frequency = atoi(freqtempstr.c_str());
+  m_frequency = std::stoi(freqtempstr.c_str());
 
   /* Set default value for L1
   if (m_L1 == EMPTY_DBL())
