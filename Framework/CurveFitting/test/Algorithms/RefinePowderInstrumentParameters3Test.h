@@ -291,17 +291,17 @@ public:
       vector<string> &strvalues = strparams[ir];
 
       string parname = strvalues[iname];
-      double parvalue = atof(strvalues[ivalue].c_str());
+      double parvalue = std::stod(strvalues[ivalue].c_str());
       string fitstr = strvalues[ifit];
       double minvalue = -DBL_MAX;
       if (imin >= 0)
-        minvalue = atof(strvalues[imin].c_str());
+        minvalue = std::stod(strvalues[imin].c_str());
       double maxvalue = DBL_MAX;
       if (imax >= 0)
-        maxvalue = atof(strvalues[imax].c_str());
+        maxvalue = std::stod(strvalues[imax].c_str());
       double stepsize = 1.0;
       if (istep >= 0)
-        stepsize = atof(strvalues[istep].c_str());
+        stepsize = std::stod(strvalues[istep].c_str());
 
       newrow << parname << parvalue << fitstr << minvalue << maxvalue
              << stepsize;
