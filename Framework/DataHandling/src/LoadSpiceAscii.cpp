@@ -336,7 +336,7 @@ API::ITableWorkspace_sptr LoadSpiceAscii::createDataWS(
       if (icol == ipt)
         newrow << std::stoi(item.c_str());
       else
-        newrow << atof(item.c_str());
+        newrow << std::stod(item.c_str());
     }
   }
 
@@ -392,10 +392,10 @@ LoadSpiceAscii::createRunInfoWS(std::map<std::string, std::string> runinfodict,
         std::vector<std::string> terms;
         boost::iter_split(terms, strvalue,
                           boost::algorithm::first_finder("+/-"));
-        value = atof(terms[0].c_str());
-        error = atof(terms[1].c_str());
+        value = std::stod(terms[0].c_str());
+        error = std::stod(terms[1].c_str());
       } else {
-        value = atof(strvalue.c_str());
+        value = std::stod(strvalue.c_str());
         error = 0;
       }
 
