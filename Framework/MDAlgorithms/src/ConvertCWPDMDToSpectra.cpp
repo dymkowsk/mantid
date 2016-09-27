@@ -123,7 +123,7 @@ void ConvertCWPDMDToSpectra::exec() {
       double thislambda = wavelength;
       if (inputDataWS->getExperimentInfo(iexp)->run().hasProperty(
               wavelengthpropertyname))
-        thislambda = atof(inputDataWS->getExperimentInfo(iexp)
+        thislambda = std::stod(inputDataWS->getExperimentInfo(iexp)
                               ->run()
                               .getProperty(wavelengthpropertyname)
                               ->value()
