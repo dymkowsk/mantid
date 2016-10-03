@@ -611,8 +611,8 @@ IMDEventWorkspace_sptr ConvertSpiceDataToRealSpace::createDataMDWorkspace(
       MDEW_MDEVENT_3);
 
   for (const auto &thisWorkspace : vec_ws2d) {
-    short unsigned int runnumber = static_cast<short unsigned int>(
-        std::stoi(thisWorkspace->run().getProperty("run_number")->value().c_str()));
+    short unsigned int runnumber = static_cast<short unsigned int>(std::stoi(
+        thisWorkspace->run().getProperty("run_number")->value().c_str()));
 
     detid_t detindex = 0;
 
@@ -692,8 +692,8 @@ IMDEventWorkspace_sptr ConvertSpiceDataToRealSpace::createMonitorMDWorkspace(
 
   for (size_t iws = 0; iws < vec_ws2d.size(); ++iws) {
     API::MatrixWorkspace_sptr thisWorkspace = vec_ws2d[iws];
-    short unsigned int runnumber = static_cast<short unsigned int>(
-        std::stoi(thisWorkspace->run().getProperty("run_number")->value().c_str()));
+    short unsigned int runnumber = static_cast<short unsigned int>(std::stoi(
+        thisWorkspace->run().getProperty("run_number")->value().c_str()));
 
     detid_t detindex = 0;
     float signal = static_cast<float>(vecmonitor[iws]);
