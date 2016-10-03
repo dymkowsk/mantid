@@ -265,6 +265,10 @@ class OSIRISDiffractionReduction(PythonAlgorithm):
                              doc='Filename of the .cal file to use in the [[AlignDetectors]] and '+\
                                  '[[DiffractionFocussing]] child algorithms.')
 
+        module_list_validator = IntBoundedValidator(0, len(INSTRUMENT_MODULE_LIST)+1)
+        self.declareProperty(IntArrayProperty('ModuleList', values=[0]),
+                             doc="The list of detector modules to process")
+
         self.declareProperty('SpectraMin', 3, doc='Minimum Spectrum to Load from (Must be more than 3)')
 
         self.declareProperty('SpectraMax', 962, doc='Maximum Spectrum to Load from file (Must be less than 962)')
