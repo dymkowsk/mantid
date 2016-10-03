@@ -19,25 +19,54 @@ class DRange(object):
     def __str__(self):
         return '%.3f - %.3f Angstrom' % (self._range[0], self._range[1])
 
-
 TIME_REGIME_TO_DRANGE = {
-    1.17e4: DRange( 0.7,  2.5),
-    2.94e4: DRange( 2.1,  3.3),
-    4.71e4: DRange( 3.1,  4.3),
-    6.48e4: DRange( 4.1,  5.3),
-    8.25e4: DRange( 5.2,  6.2),
-    10.02e4: DRange( 6.2,  7.3),
-    11.79e4: DRange( 7.3,  8.3),
-    13.55e4: DRange( 8.3,  9.5),
-    15.32e4: DRange( 9.4, 10.6),
+    1.17e4: DRange(0.7,  2.5),
+    2.94e4: DRange(2.1,  3.3),
+    4.71e4: DRange(3.1,  4.3),
+    6.48e4: DRange(4.1,  5.3),
+    8.25e4: DRange(5.2,  6.2),
+    10.02e4: DRange(6.2,  7.3),
+    11.79e4: DRange(7.3,  8.3),
+    13.55e4: DRange(8.3,  9.5),
+    15.32e4: DRange(9.4, 10.6),
     17.09e4: DRange(10.4, 11.6),
     18.86e4: DRange(11.0, 12.5),
     20.63e4: DRange(12.2, 13.8)
 }
 
-class DRangeToWorkspaceMap(object):
+
+class Module(object):
     """
-    A "wrapper" class for a map, which maps workspaces from their corresponding
+    Holds a mapping for the various modules which are
+    contiguous detectors with common properties
+    """
+    def __init__(self, min_detector, max_detector):
+        assert type(max_detector) is int
+        assert type(min_detector) is int
+        assert min_detector < max_detector
+        self._range = [min_detector, max_detector]
+
+    def get_detector_list(self):
+        return range(self._range[0], self._range[1])
+
+    def __str__(self):
+        return 'Detectors {}-{}'.format(self._range[0], self._range[1])
+
+# Modules are specified from
+# http://www.isis.stfc.ac.uk/instruments/osiris/documents/osiris-user-guide6672.pdf#page=30&zoom=130,-252,730
+INSTRUMENT_MODULE_LIST = (
+    Module(3, 123),
+    Module(123, 243),
+    Module(243, 363),
+    Module(363, 483),
+    Module(483, 603),
+    Module(603, 723),
+    Module(723, 843),
+    Module(843, 963)
+)
+
+class DRangeToWorkspaceMap(object):
+    """    A "wrapper" class for a map, which maps workspaces from their corresponding
     time regimes.
     """
 
