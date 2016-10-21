@@ -394,3 +394,18 @@ add_subdirectory ( test )
 ###########################################################################
 
 install ( TARGETS MantidWidgets ${SYSTEM_PACKAGE_TARGET} DESTINATION ${LIB_DIR} )
+
+add_executable ( WidgetsMain src/main.cpp )
+
+target_link_libraries ( WidgetsMain LINK_PRIVATE ${TCMALLOC_LIBRARIES_LINKTIME}
+            MantidWidgets
+            MantidQtAPI
+            QtPropertyBrowser
+            ${CORE_MANTIDLIBS}
+            ${QT_LIBRARIES} ${QWT_LIBRARIES}
+            ${QSCINTILLA_LIBRARIES}
+            ${POCO_LIBRARIES}
+            ${Boost_LIBRARIES}
+            ${ZLIB_LIBRARIES}
+            ${OPENGL_LIBRARIES}
+            )
