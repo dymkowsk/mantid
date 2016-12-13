@@ -48,12 +48,6 @@ public:
   void setInstrument(std::string instrument);
   std::string &getInstrument();
 
-  void setMinValue(double minValue);
-  double getMinValue();
-
-  void setMaxValue(double maxValue);
-  double getMaxValue();
-
   void setSpecialCoordinates(int specialCoordinates);
   int getSpecialCoordinates();
 

@@ -74,35 +74,6 @@ void MetadataJsonManager::readInSerializedJson(std::string serializedJson) {
 }
 
 /**
- * Set the max value of the workspace's data range.
- * @param maxValue The max value.
- */
-void MetadataJsonManager::setMaxValue(double maxValue) {
-  this->maxValue = maxValue;
-}
-
-/**
- * Get the max value of teh workspace''s data range.
- * @return The max value or 0.0.
- */
-double MetadataJsonManager::getMaxValue() { return maxValue; }
-
-/**
- * Set the min value of the workspace's data range.
- * @param minValue The min value.
- */
-void MetadataJsonManager::setMinValue(double minValue) {
-  this->minValue = minValue;
-}
-
-/**
- * Get the min value of teh workspace's data range.
- * @returns The min value or 0.0;
- *
- */
-double MetadataJsonManager::getMinValue() { return minValue; }
-
-/**
  * Set the instrument.
  * @param instrument The instrument associated with the workspace.
  */

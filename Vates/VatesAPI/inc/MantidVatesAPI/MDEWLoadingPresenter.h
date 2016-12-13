@@ -53,9 +53,6 @@ public:
   void setAxisLabels(vtkDataSet *visualDataSet) override;
   ~MDEWLoadingPresenter() override;
   const std::string &getInstrument() override;
-  double getMinValue() override;
-  double getMaxValue() override;
-
 protected:
   /*---------------------------------------------------------------------------
   Common/shared operations and members for all MDEW file-type loading.

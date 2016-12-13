@@ -518,22 +518,7 @@ void vtkSplatterPlotFactory::validate() const {
  * Add meta data to the visual data set.
  */
 void vtkSplatterPlotFactory::addMetadata() const {
-  const double defaultValue = 0.1;
-
   if (this->dataSet) {
-    double *range = nullptr;
-    range = dataSet->GetScalarRange();
-
-    if (range) {
-      m_minValue = range[0];
-      m_maxValue = range[1];
-    } else {
-      m_minValue = defaultValue;
-      m_maxValue = defaultValue;
-    }
-
-    m_metadataJsonManager->setMinValue(m_minValue);
-    m_metadataJsonManager->setMaxValue(m_maxValue);
     m_metadataJsonManager->setInstrument(
         m_metaDataExtractor->extractInstrument(m_workspace));
     m_metadataJsonManager->setSpecialCoordinates(
