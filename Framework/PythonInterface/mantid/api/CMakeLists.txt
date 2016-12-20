@@ -16,6 +16,7 @@ set ( EXPORT_FILES
   src/Exports/DetectorInfo.cpp
   src/Exports/DeprecatedAlgorithmChecker.cpp
   src/Exports/Algorithm.cpp
+  src/Exports/DeprecatedAlgorithm.cpp
   src/Exports/DataProcessorAlgorithm.cpp
   src/Exports/AlgorithmFactory.cpp
   src/Exports/AlgorithmManager.cpp
