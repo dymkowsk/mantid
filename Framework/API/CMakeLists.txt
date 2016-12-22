@@ -26,8 +26,7 @@ set ( SRC_FILES
 	src/CoordTransform.cpp
 	src/CostFunctionFactory.cpp
 	src/DataProcessorAlgorithm.cpp
-	src/DeprecatedAlgorithm.cpp
-        src/DeprecatedPythonAlgorithm.cpp
+        src/DeprecatedAlgorithm.cpp
 	src/DetectorInfo.cpp
 	src/DomainCreatorFactory.cpp
 	src/EnabledWhenWorkspaceIsType.cpp
@@ -183,8 +182,7 @@ set ( INC_FILES
 	inc/MantidAPI/CostFunctionFactory.h
 	inc/MantidAPI/DataProcessorAlgorithm.h
 	inc/MantidAPI/DeclareUserAlg.h
-	inc/MantidAPI/DeprecatedAlgorithm.h
-        inc/MantidAPI/DeprecatedPythonAlgorithm.h
+        inc/MantidAPI/DeprecatedAlgorithm.h
 	inc/MantidAPI/DetectorInfo.h
 	inc/MantidAPI/DllConfig.h
 	inc/MantidAPI/DomainCreatorFactory.h
