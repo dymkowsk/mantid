@@ -37,6 +37,7 @@ public:
   // Overrriden methods from Peaks Presenter
   void update() override;
   void updateWithSlicePoint(const PeakBoundingBox &) override;
+  void showNonOrthogonalView(bool enable) override;
   bool changeShownDim() override;
   bool isLabelOfFreeAxis(const std::string &label) const override;
   SetPeaksWorkspaces presentedWorkspaces() const override;

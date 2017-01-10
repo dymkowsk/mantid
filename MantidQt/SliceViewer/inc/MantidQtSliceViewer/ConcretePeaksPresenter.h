@@ -36,6 +36,7 @@ public:
   ~ConcretePeaksPresenter() override;
   void update() override;
   void updateWithSlicePoint(const PeakBoundingBox &slicePoint) override;
+  void showNonOrthogonalView(bool enable) override;
   bool changeShownDim() override;
   bool isLabelOfFreeAxis(const std::string &label) const override;
   SetPeaksWorkspaces presentedWorkspaces() const override;
@@ -112,6 +113,7 @@ private:
   std::vector<size_t> findVisiblePeakIndexes(const PeakBoundingBox &box);
   /// Set the visible peak list.
   void setVisiblePeaks(const std::vector<size_t> &indexes);
+  bool m_showNonOrthogonalView;
 };
 }
 }

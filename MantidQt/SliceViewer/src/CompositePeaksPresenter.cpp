@@ -52,6 +52,16 @@ void CompositePeaksPresenter::updateWithSlicePoint(
   }
 }
 
+void CompositePeaksPresenter::showNonOrthogonalView(bool enable) {
+  if (useDefault()) {
+    m_default->showNonOrthogonalView(enable);
+    return;
+  }
+  for (auto it = m_subjects.begin(); it != m_subjects.end(); ++it) {
+    (*it)->showNonOrthogonalView(enable);
+  }
+}
+
 /**
 Handle dimension display changing.
 */

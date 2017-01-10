@@ -76,6 +76,7 @@ coordinateToString(Mantid::Kernel::SpecialCoordinateSystem coordSystem) {
  */
 void ConcretePeaksPresenter::produceViews() {
 
+  std::cout << "orthogonal view is " << m_showNonOrthogonalView << std::endl;
   PeakOverlayView_sptr newView = m_viewFactory->createView(this, m_transform);
   PeakOverlayView_sptr oldView = m_viewPeaks;
   if (oldView) {
@@ -159,7 +160,7 @@ ConcretePeaksPresenter::ConcretePeaksPresenter(
           canAddPeaksTo(peaksWS.get(), m_transform->getCoordinateSystem())) {
   // Check that the workspaces appear to be compatible. Log if otherwise.
   checkWorkspaceCompatibilities(mdWS);
-
+  m_showNonOrthogonalView = false;
   this->initialize();
 }
 
@@ -242,6 +243,11 @@ void ConcretePeaksPresenter::updateWithSlicePoint(
     m_slicePoint = viewableRegion;
     doFindPeaksInRegion();
   }
+}
+
+void ConcretePeaksPresenter::showNonOrthogonalView(bool enable) {
+  m_showNonOrthogonalView = enable;
+  m_viewPeaks->updateView();
 }
 
 /**

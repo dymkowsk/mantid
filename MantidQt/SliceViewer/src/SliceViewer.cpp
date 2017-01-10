@@ -2416,10 +2416,11 @@ void SliceViewer::disableOrthogonalAnalysisTools(bool checked) {
     m_nonOrthogonalOverlay->disable();
   }
 
+  m_peaksPresenter->showNonOrthogonalView(checked);
+
   ui.btnDoLine->setDisabled(checked);
   ui.btnSnapToGrid->setDisabled(checked);
   ui.btnClearLine->setDisabled(checked);
-  ui.btnPeakOverlay->setDisabled(checked);
 
   if (m_lockAspectRatiosActionAll->isChecked() && checked) {
     m_lastRatioState = All;
