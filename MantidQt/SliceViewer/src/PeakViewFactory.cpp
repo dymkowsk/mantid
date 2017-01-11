@@ -75,6 +75,7 @@ PeakViewFactory::PeakViewFactory(Mantid::API::IMDWorkspace_sptr mdWS,
       m_calculator(std::make_shared<
           Mantid::SliceViewer::EllipsoidPlaneSliceCalculator>()) {
   setForegroundAndBackgroundColors(colorNumber);
+  m_showNonOrthogonalView = false;
 }
 
 PeakViewFactory::~PeakViewFactory() {}
@@ -107,6 +108,11 @@ boost::shared_ptr<PeakOverlayView> PeakViewFactory::createView(
 PeakRepresentation_sptr PeakViewFactory::createSinglePeakRepresentation(
     const Mantid::Geometry::IPeak &peak, Mantid::Kernel::V3D position,
     Mantid::Geometry::PeakTransform_const_sptr transform) const {
+
+  if (m_showNonOrthogonalView) {
+    // change the position here
+    std::cout << "would be nonorth from here" << std::endl;
+  }
   // Available representations for this peaks: Cross, Sphere, Ellipsoid
   const auto &peakShape = peak.getPeakShape();
   const auto shapeName = peakShape.shapeName();
@@ -196,6 +202,10 @@ void PeakViewFactory::setForegroundAndBackgroundColors(
       defaultPalette.backgroundIndexToColour(static_cast<int>(colourNumber));
   m_foregroundColor = peakColourEnum;
   m_backgroundColor = backColourEnum;
+}
+
+void PeakViewFactory::showNonOrthogonalView(bool enable) {
+  m_showNonOrthogonalView = enable;
 }
 }
 }

@@ -50,6 +50,8 @@ public:
   void swapPeaksWorkspace(
       boost::shared_ptr<Mantid::API::IPeaksWorkspace> &peaksWS) override;
 
+  void showNonOrthogonalView(bool enable) override;
+
 private:
   // Selector for the correct representation of a single peak
   PeakRepresentation_sptr createSinglePeakRepresentation(
@@ -90,6 +92,8 @@ private:
   /// share between the peaks
   std::shared_ptr<Mantid::SliceViewer::EllipsoidPlaneSliceCalculator>
       m_calculator;
+
+  bool m_showNonOrthogonalView;
 };
 }
 }

@@ -2418,6 +2418,12 @@ void SliceViewer::disableOrthogonalAnalysisTools(bool checked) {
 
   m_peaksPresenter->showNonOrthogonalView(checked);
 
+  if (ui.btnPeakOverlay->isChecked()) { // or in reality, has changed in view
+                                        // from the last point
+    m_peaksPresenter->clear();
+    peakOverlay_clicked();
+  }
+
   ui.btnDoLine->setDisabled(checked);
   ui.btnSnapToGrid->setDisabled(checked);
   ui.btnClearLine->setDisabled(checked);
