@@ -52,6 +52,7 @@ public:
       boost::shared_ptr<Mantid::API::IPeaksWorkspace> &peaksWS) override;
 
   void showNonOrthogonalView(bool enable) override;
+  void changeShownDim(size_t dimX, size_t dimY) override;
 
 private:
   // Selector for the correct representation of a single peak

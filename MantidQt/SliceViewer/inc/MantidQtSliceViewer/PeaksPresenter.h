@@ -52,7 +52,7 @@ public:
   virtual void update() = 0;
   virtual void updateWithSlicePoint(const PeakBoundingBox &) = 0;
   virtual void showNonOrthogonalView(bool enable) = 0;
-  virtual bool changeShownDim() = 0;
+  virtual bool changeShownDim(size_t dimX, size_t m_dimY) = 0;
   virtual bool isLabelOfFreeAxis(const std::string &label) const = 0;
   virtual SetPeaksWorkspaces presentedWorkspaces() const = 0;
   virtual void setForegroundColor(const PeakViewColor) = 0;

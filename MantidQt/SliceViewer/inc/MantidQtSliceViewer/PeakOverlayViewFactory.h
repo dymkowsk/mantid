@@ -63,6 +63,7 @@ public:
   virtual void swapPeaksWorkspace(
       boost::shared_ptr<Mantid::API::IPeaksWorkspace> &peaksWS) = 0;
   virtual void showNonOrthogonalView(bool enable) = 0;
+  virtual void changeShownDim(size_t dimX, size_t dimY) = 0;
 };
 
 /// Factory Shared Pointer typedef.

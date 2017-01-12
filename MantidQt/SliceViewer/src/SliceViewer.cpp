@@ -1620,7 +1620,7 @@ void SliceViewer::updateDisplay(bool resetAxes) {
     // peaks.
     enablePeakOverlaysIfAppropriate();
     // Transform the peak overlays according to the new plotting.
-    m_peaksPresenter->changeShownDim();
+    m_peaksPresenter->changeShownDim(m_dimX, m_dimY);
 
     // Update the pointer to the slider widget.
     updatePeakOverlaySliderWidget();

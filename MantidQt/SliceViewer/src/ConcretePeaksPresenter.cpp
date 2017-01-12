@@ -258,11 +258,11 @@ ConcretePeaksPresenter::~ConcretePeaksPresenter() { hideAll(); }
  Respond to changes in the shown dimension.
  @ return True only if this succeeds.
  */
-bool ConcretePeaksPresenter::changeShownDim() {
+bool ConcretePeaksPresenter::changeShownDim(size_t dimX, size_t dimY) {
   // Reconfigure the mapping tranform.
   const bool transformSucceeded = this->configureMappingTransform();
   // Apply the mapping tranform to move each peak overlay object.
-
+  m_viewFactory->changeShownDim(dimX, dimY);
   if (transformSucceeded) {
     m_viewPeaks->movePosition(m_transform);
   }

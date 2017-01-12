@@ -222,5 +222,10 @@ void PeakViewFactory::setForegroundAndBackgroundColors(
 void PeakViewFactory::showNonOrthogonalView(bool enable) {
   m_showNonOrthogonalView = enable;
 }
+
+void PeakViewFactory::changeShownDim(size_t dimX, size_t dimY) {
+	m_dimX = dimX;
+	m_dimY = dimY;
+}
 }
 }
