@@ -42,6 +42,7 @@ public:
   PeakViewFactory(Mantid::API::IMDWorkspace_sptr mdWS,
                   Mantid::API::IPeaksWorkspace_sptr peaksWS, QwtPlot *plot,
                   QWidget *parent, const int plotXIndex, const int plotYIndex,
+					size_t dimX, size_t dimY,
                   const size_t colorNumber = 0);
   virtual ~PeakViewFactory();
   boost::shared_ptr<PeakOverlayView> createView(
@@ -92,7 +93,10 @@ private:
   /// share between the peaks
   std::shared_ptr<Mantid::SliceViewer::EllipsoidPlaneSliceCalculator>
       m_calculator;
-
+  bool m_requiresSkewMatrix;
+  Mantid::coord_t m_skewMatrix[9];
+  size_t m_dimX;
+  size_t m_dimY;
   bool m_showNonOrthogonalView;
 };
 }

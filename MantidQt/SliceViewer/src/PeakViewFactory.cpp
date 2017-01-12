@@ -9,6 +9,8 @@
 #include "MantidGeometry/MDGeometry/QSample.h"
 #include "MantidDataObjects/PeakShapeSpherical.h"
 #include "MantidDataObjects/PeakShapeEllipsoid.h"
+#include "MantidQtAPI/NonOrthogonal.h"
+
 
 namespace {
 struct ZMinAndMax {
@@ -67,7 +69,7 @@ namespace SliceViewer {
 PeakViewFactory::PeakViewFactory(Mantid::API::IMDWorkspace_sptr mdWS,
                                  Mantid::API::IPeaksWorkspace_sptr peaksWS,
                                  QwtPlot *plot, QWidget *parent,
-                                 const int plotXIndex, const int plotYIndex,
+                                 const int plotXIndex, const int plotYIndex, size_t dimX, size_t dimY,
                                  const size_t colorNumber)
     : PeakOverlayViewFactoryBase(plot, parent, plotXIndex, plotYIndex,
                                  colorNumber),
@@ -76,6 +78,15 @@ PeakViewFactory::PeakViewFactory(Mantid::API::IMDWorkspace_sptr mdWS,
           Mantid::SliceViewer::EllipsoidPlaneSliceCalculator>()) {
   setForegroundAndBackgroundColors(colorNumber);
   m_showNonOrthogonalView = false;
+  m_requiresSkewMatrix = API::requiresSkewMatrix(m_mdWS);
+  m_dimX = dimX;
+  m_dimY = dimY;
+  if (m_requiresSkewMatrix) {
+	  Mantid::Kernel::DblMatrix skewMatrix(3, 3, true);
+	  API::provideSkewMatrix(skewMatrix, m_mdWS);
+	  skewMatrix.Invert();
+	  API::transformFromDoubleToCoordT(skewMatrix, m_skewMatrix);
+  }
 }
 
 PeakViewFactory::~PeakViewFactory() {}
@@ -110,8 +121,12 @@ PeakRepresentation_sptr PeakViewFactory::createSinglePeakRepresentation(
     Mantid::Geometry::PeakTransform_const_sptr transform) const {
 
   if (m_showNonOrthogonalView) {
-    // change the position here
-    std::cout << "would be nonorth from here" << std::endl;
+	  if (m_requiresSkewMatrix && API::isHKLDimensions(m_mdWS, m_dimX, m_dimY)) {
+		auto missingHKL = API::getMissingHKLDimensionIndex(m_mdWS, m_dimX, m_dimY);
+		position[1];
+		const_cast<Mantid::coord_t*>(m_skewMatrix);
+		API::transformLookpointToWorkspaceCoordGeneric(position, const_cast<Mantid::coord_t*>(m_skewMatrix), m_dimX, m_dimY, missingHKL);
+	  }
   }
   // Available representations for this peaks: Cross, Sphere, Ellipsoid
   const auto &peakShape = peak.getPeakShape();

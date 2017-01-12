@@ -85,7 +85,7 @@ SliceViewer::SliceViewer(QWidget *parent)
       m_fastRender(true), m_rebinMode(false), m_rebinLocked(true),
       m_mdSettings(new MantidQt::API::MdSettings()), m_logger("SliceViewer"),
       m_firstNonOrthogonalWorkspaceOpen(true), m_nonOrthogonalDefault(false),
-      m_oldDimNonOrthogonal(false),
+      m_oldDimNonOrthogonal(false), m_canSwitchScales(false),
       m_peaksPresenter(boost::make_shared<CompositePeaksPresenter>(this)),
       m_proxyPeaksPresenter(
           boost::make_shared<ProxyCompositePeaksPresenter>(m_peaksPresenter)),
@@ -847,6 +847,7 @@ void SliceViewer::setWorkspace(Mantid::API::IMDWorkspace_sptr ws) {
   enablePeakOverlaysIfAppropriate();
   // Send out a signal
   emit changedShownDim(m_dimX, m_dimY);
+  m_canSwitchScales = true;
 }
 
 //------------------------------------------------------------------------------
@@ -1203,6 +1204,9 @@ void SliceViewer::zoomRectSlot(const QwtDoubleRect &rect) {
     return;
   this->setXYLimits(rect.left(), rect.right(), rect.top(), rect.bottom());
   autoRebinIfRequired();
+  if (ui.btnNonOrthogonalToggle->isChecked()) {
+    adjustSize();
+  }
 }
 
 /// Slot for opening help page
@@ -2065,8 +2069,7 @@ void SliceViewer::openFromXML(const QString &xml) {
         "SliceViewer::openFromXML(): No root element in XML string.");
 
   // ------- Find the workspace ------------
-  Poco::XML::Element *cur = NULL;
-  cur = pRootElem->getChildElement("MDWorkspaceName");
+  Poco::XML::Element *cur = pRootElem->getChildElement("MDWorkspaceName");
   if (!cur)
     throw std::runtime_error(
         "SliceViewer::openFromXML(): No MDWorkspaceName element.");
@@ -2418,10 +2421,21 @@ void SliceViewer::disableOrthogonalAnalysisTools(bool checked) {
 
   m_peaksPresenter->showNonOrthogonalView(checked);
 
-  if (ui.btnPeakOverlay->isChecked()) { // or in reality, has changed in view
-                                        // from the last point
-    m_peaksPresenter->clear();
-    peakOverlay_clicked();
+  if (checked) { // change tooltips to explain why buttons are disabled
+    ui.btnDoLine->setToolTip(
+        QString("Cut line is disabled in NonOrthogonal view"));
+    ui.btnSnapToGrid->setToolTip(
+        QString("Cut line is disabled in NonOrthogonal view"));
+    ui.btnClearLine->setToolTip(
+        QString("Cut line is disabled in NonOrthogonal view"));
+    ui.btnPeakOverlay->setToolTip(
+        QString("Peak overlay is disabled in NonOrthogonal view"));
+  }
+  else {
+	  ui.btnDoLine->setToolTip(QString("Draw a 1D cut line"));
+	  ui.btnSnapToGrid->setToolTip(QString("Snap to grid when drawing cut line"));
+	  ui.btnClearLine->setToolTip(QString("Remove the current cut line"));
+	  ui.btnPeakOverlay->setToolTip(QString("Overlay Peaks"));
   }
 
   ui.btnDoLine->setDisabled(checked);
@@ -2522,7 +2536,7 @@ SliceViewer::setPeaksWorkspaces(const QStringList &list) {
     // Peak View factory, displays peaks on a peak by peak basis
     auto peakViewFactory = boost::make_shared<PeakViewFactory>(
         m_ws, peaksWS, m_plot, m_plot->canvas(), m_spect->xAxis(),
-        m_spect->yAxis(), numberOfChildPresenters);
+        m_spect->yAxis(), m_dimX, m_dimY, numberOfChildPresenters);
 
     try {
       m_peaksPresenter->addPeaksPresenter(
@@ -2898,7 +2912,7 @@ std::string SliceViewer::saveToProject() const {
   tsv.writeSection("overlay", m_lineOverlay->saveToProject());
 
   if (m_overlayWS)
-    tsv.writeLine("OverlayWorkspace") << m_overlayWS->name();
+    tsv.writeLine("OverlayWorkspace") << m_overlayWS->getName();
 
   return tsv.outputLines();
 }
@@ -2919,11 +2933,14 @@ std::string SliceViewer::saveDimensionWidgets() const {
 }
 
 void SliceViewer::switchAxis() {
-  auto isHKL = API::isHKLDimensions(m_ws, m_dimX, m_dimY);
-  if (isHKL) {
-    applyNonOrthogonalAxisScaleDraw();
-  } else {
-    applyOrthogonalAxisScaleDraw();
+  if (m_canSwitchScales) { // cannot be called when sliceviewer first
+                           // initialised because axis is inaccurate
+    auto isHKL = API::isHKLDimensions(m_ws, m_dimX, m_dimY);
+    if (isHKL) {
+      applyNonOrthogonalAxisScaleDraw();
+    } else {
+      applyOrthogonalAxisScaleDraw();
+    }
   }
 }
 
