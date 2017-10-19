@@ -38,7 +38,6 @@ class LoadDMOL3(AbinsModules.GeneralAbInitioProgram):
             self._read_atomic_coordinates(file_obj=dmol3_file, data=data, masses_from_file=masses)
 
             # read frequencies, corresponding atomic displacements and construct k-points data
-            self._parser.find_first(file_obj=dmol3_file, msg="Frequencies (cm-1) and normal modes ")
             self._read_modes(file_obj=dmol3_file, data=data)
 
             # save data to hdf file
@@ -116,6 +115,8 @@ class LoadDMOL3(AbinsModules.GeneralAbInitioProgram):
         xdisp = []
         ydisp = []
         zdisp = []
+
+        self._parser.find_first(file_obj=file_obj, msg="Frequencies (cm-1) and normal modes ")
 
         # parse block with frequencies and atomic displacements
         while not (self._parser.block_end(file_obj=file_obj, msg=end_msgs) or
