@@ -34,14 +34,10 @@ class LoadGAUSSIAN(AbinsModules.GeneralAbInitioProgram):
             # create dummy lattice vectors
             self._generates_lattice_vectors(data=data)
 
-            masses = self._read_masses_from_file(file_obj=gaussian_file)
-            # move file pointer to the last optimized atomic positions
-            self._parser.find_last(file_obj=gaussian_file, msg="Input orientation:")
-            self._read_atomic_coordinates(file_obj=gaussian_file, data=data, masses_from_file=masses)
+            # read equilibrium positions 
+            self._read_atomic_coordinates(file_obj=gaussian_file, data=data)
 
             # read frequencies, corresponding atomic displacements for a molecule
-            self._parser.find_first(file_obj=gaussian_file,
-                                    msg="Harmonic frequencies (cm**-1), IR intensities (KM/Mole), Raman scattering")
             self._read_modes(file_obj=gaussian_file, data=data)
 
         # save data to hdf file
@@ -50,14 +46,17 @@ class LoadGAUSSIAN(AbinsModules.GeneralAbInitioProgram):
         # return AbinsData object
         return self._rearrange_data(data=data)
 
-    def _read_atomic_coordinates(self, file_obj=None, data=None, masses_from_file=None):
+    def _read_atomic_coordinates(self, file_obj=None, data=None):
         """
         Reads atomic coordinates from .log GAUSSIAN file.
 
         :param file_obj: file object from which we read
         :param data: Python dictionary to which atoms data should be added
-        :param masses_from_file:  masses read from an ab initio output file
         """
+        masses_from_file = self._read_masses_from_file(file_obj=file_obj)
+
+        self._parser.find_last(file_obj=file_obj, msg="Input orientation:")
+
         atoms = {}
         atom_indx = 0
         end_msgs = ["---------------------------------------------------------------------"]
@@ -101,6 +100,9 @@ class LoadGAUSSIAN(AbinsModules.GeneralAbInitioProgram):
         :param file_obj: file object from which we read
         :param data: Python dictionary to which k-point data should be added
         """
+        self._parser.find_first(file_obj=file_obj,
+                                msg="Harmonic frequencies (cm**-1), IR intensities (KM/Mole), Raman scattering")
+
         freq = []
         # it is a molecule so we subtract 3 translations and 3 rotations
         num_freq = 3 * self._num_atoms - AbinsModules.AbinsConstants.ROTATIONS_AND_TRANSLATIONS
