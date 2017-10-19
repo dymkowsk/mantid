@@ -24,6 +24,7 @@ from .LoadCASTEP import LoadCASTEP
 from .LoadCRYSTAL import LoadCRYSTAL
 from .LoadDMOL3 import LoadDMOL3
 from .LoadGAUSSIAN import LoadGAUSSIAN
+from .LoadVASP import LoadVASP
 from .GeneralAbInitioParser import GeneralAbInitioParser
 
 # Calculating modules
