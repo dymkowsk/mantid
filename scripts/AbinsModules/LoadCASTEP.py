@@ -2,7 +2,7 @@ from __future__ import (absolute_import, division, print_function)
 import numpy as np
 import re
 import AbinsModules
-from  mantid.kernel import Atom
+from mantid.kernel import Atom
 
 
 class LoadCASTEP(AbinsModules.GeneralAbInitioProgram):
