@@ -116,7 +116,7 @@ class LoadDMOL3(AbinsModules.GeneralAbInitioProgram):
         ydisp = []
         zdisp = []
 
-        self._parser.find_first(file_obj=file_obj, msg="Frequencies (cm-1) and normal modes ")
+        self._parser.find_last(file_obj=file_obj, msg="Frequencies (cm-1) and normal modes ")
 
         # parse block with frequencies and atomic displacements
         while not (self._parser.block_end(file_obj=file_obj, msg=end_msgs) or
