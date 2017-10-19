@@ -40,11 +40,11 @@ class LoadDMOL3(AbinsModules.GeneralAbInitioProgram):
             # read frequencies, corresponding atomic displacements and construct k-points data
             self._read_modes(file_obj=dmol3_file, data=data)
 
-            # save data to hdf file
-            self.save_ab_initio_data(data=data)
+        # save data to hdf file
+        self.save_ab_initio_data(data=data)
 
-            # return AbinsData object
-            return self._rearrange_data(data=data)
+        # return AbinsData object
+        return self._rearrange_data(data=data)
 
     def _read_lattice_vectors(self, obj_file=None, data=None):
         """

@@ -44,11 +44,11 @@ class LoadGAUSSIAN(AbinsModules.GeneralAbInitioProgram):
                                     msg="Harmonic frequencies (cm**-1), IR intensities (KM/Mole), Raman scattering")
             self._read_modes(file_obj=gaussian_file, data=data)
 
-            # save data to hdf file
-            self.save_ab_initio_data(data=data)
+        # save data to hdf file
+        self.save_ab_initio_data(data=data)
 
-            # return AbinsData object
-            return self._rearrange_data(data=data)
+        # return AbinsData object
+        return self._rearrange_data(data=data)
 
     def _read_atomic_coordinates(self, file_obj=None, data=None, masses_from_file=None):
         """
