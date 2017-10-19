@@ -24,11 +24,13 @@ class GeneralAbInitioParser(object):
             if line.strip() and msg in line:
                 return line
 
-    def find_last(self, file_obj=None, msg=None):
+    def find_last(self, file_obj=None, msg=None, move_next_line=False):
         """
         Moves file current position to the last occurrence of msg.
+
         :param file_obj: file object from which we read
         :param msg: keyword to find
+        :param move_next_line: if True then file pointer moves to the next line otherwise it moves to the line with msg
         """
         if six.PY3:
             msg = bytes(msg, "utf8")
@@ -47,6 +49,9 @@ class GeneralAbInitioParser(object):
             raise ValueError("No entry " + msg + " has been found.")
         else:
             file_obj.seek(last_entry)
+
+        if move_next_line:
+            file_obj.readline()
 
     def file_end(self, file_obj=None):
         """

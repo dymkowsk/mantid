@@ -30,11 +30,6 @@ class LoadDMOL3(AbinsModules.GeneralAbInitioProgram):
 
         with io.open(self._clerk.get_input_filename(), "rb", ) as dmol3_file:
 
-            # Move read file pointer to the last calculation recorded in the .outmol file. First calculation could be
-            # geometry optimization. The last calculation in the file is expected to be calculation of vibrational data.
-            # There may be some intermediate resume calculations.
-            self._parser.find_last(file_obj=dmol3_file, msg="$cell vectors")
-
             # read lattice vectors
             self._read_lattice_vectors(obj_file=dmol3_file, data=data)
 
@@ -58,7 +53,7 @@ class LoadDMOL3(AbinsModules.GeneralAbInitioProgram):
         :param obj_file: file object from which we read
         :param data: Python dictionary to which found lattice vectors should be added
         """
-        self._parser.find_first(file_obj=obj_file, msg="$cell vectors")
+        self._parser.find_last(file_obj=obj_file, msg="$cell vectors", move_next_line=True)
 
         dim = 3
         vectors = []
