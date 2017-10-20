@@ -1,6 +1,7 @@
 import AbinsModules
 import io
 import numpy as np
+import six
 from mantid.kernel import Atom
 
 
@@ -113,8 +114,41 @@ class LoadVASP(AbinsModules.GeneralAbInitioProgram):
         :param file_obj: file object from which we read
         :param data: Python dictionary to which k-point data should be added
         """
-        block_begin = self._parser.find_first(file_obj=file_obj,
-                                              msg="Eigenvectors and eigenvalues of the dynamical matrix")
-        if block_begin is None:
-            raise ValueError("No block with eigenvectors and eigenvalues of the dynamical matrix has been found.")
+        self._parser.last_first(file_obj=file_obj, msg="Eigenvectors and eigenvalues of the dynamical matrix")
+        file_obj.readline()  # ----------------------------------------------------
 
+        end_msg = "----------------------------------------------------"
+
+        freq = []
+        displacements = []
+
+        while not self._parser.file_end(file_obj=file_obj) and self._parser.block_end(file_obj=file_obj, msg=[end_msg]):
+
+            # read mode
+            self._read_freq_block(file_obj=file_obj, freq=freq)
+
+
+
+            while not self._parser.file_end(file_obj=file_obj)
+
+
+    def _read_freq_block(self, file_obj=None, freq=None):
+        """
+        Parses block with frequencies.
+        :param file_obj: file object from which we read
+        :param freq: list with frequencies which we update
+        """
+        mode_marker = "f"
+        soft_mode_marker = "f / i"
+
+        if not six.PY2:
+            mode_marker = bytes(mode_marker, "utf8")
+            soft_mode_marker = bytes(soft_mode_marker, "utf8")
+
+        line = self._parser.find_first(file_obj=file_obj, msg="f")
+        if mode_marker in line:
+            freq.append(float(line.split()[7]))
+        elif soft_mode_marker in line:
+            freq.append(-float(line.split()[7]))
+        else:
+            raise ValueError("Invlid ")
