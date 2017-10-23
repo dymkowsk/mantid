@@ -130,9 +130,9 @@ class LoadDMOL3(AbinsModules.GeneralAbInitioProgram):
         k_coordinates = [[0.0, 0.0, 0.0]]
         displacements = [[xdisp, ydisp, zdisp]]
 
-        self._num_modes = len(freq[0])
-        if self._num_modes % 3 == 0:
-            self._num_atoms = int(self._num_modes / 3)
+        num_modes = len(freq[0])
+        if num_modes % 3 == 0:
+            self._num_atoms = int(num_modes / 3)
         else:
             raise ValueError("Invalid number of modes.")
 
