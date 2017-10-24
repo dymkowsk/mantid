@@ -47,7 +47,7 @@ class LoadVASP(AbinsModules.GeneralAbInitioProgram):
 
     def _read_lattice_vectors(self, obj_file=None, data=None):
         """
-        Reads lattice vectors from .outmol VASP file.
+        Reads lattice vectors from OUTCAR* VASP file.
         :param obj_file: file object from which we read
         :param data: Python dictionary to which found lattice vectors should be added
         """
@@ -78,14 +78,14 @@ class LoadVASP(AbinsModules.GeneralAbInitioProgram):
         pos = None
         while True:
 
+            # read symbol of an element
             symbol = self._parser.find_first(file_obj=file_obj, msg="VRHFIN")
-
             if symbol is None:
                 break
             else:
                 symbol = symbol.replace("=", " ").replace(":", " ").split()[1]
 
-            # read symbol of an element
+            # fill dictionary with atoms data
             atoms["atom_{}".format(tot_num_atoms)] = {"symbol": symbol,
                                                       "mass": Atom(symbol=symbol).mass, "sort": tot_num_atoms}
             # read corresponding masses
@@ -137,14 +137,13 @@ class LoadVASP(AbinsModules.GeneralAbInitioProgram):
         weights = [1.0]
         k_coordinates = [[0.0, 0.0, 0.0]]
         self._num_atoms = len(data["atoms"])
-        self._num_modes = len(freq[0])
 
         data["frequencies"] = np.asarray(freq).astype(dtype=AbinsModules.AbinsConstants.FLOAT_TYPE, casting="safe")
         data["k_vectors"] = np.asarray(k_coordinates).astype(dtype=AbinsModules.AbinsConstants.FLOAT_TYPE,
                                                              casting="safe")
         data["weights"] = np.asarray(weights).astype(dtype=AbinsModules.AbinsConstants.FLOAT_TYPE, casting="safe")
 
-        # num_freq: number of modes (frequencies, fundamentals)
+        # num_freq: number of modes (frequencies; fundamentals)
         # num_atom: number of atoms in the system
         # dim: spacial dimension (atoms vibrate in 3D so dim=3)
         #
@@ -152,15 +151,16 @@ class LoadVASP(AbinsModules.GeneralAbInitioProgram):
         disp = np.asarray(displacements).astype(dtype=AbinsModules.AbinsConstants.COMPLEX_TYPE, casting="safe")
 
         # multiply displacements by sqrt of mass
-
         masses = np.asarray([data["atoms"]["atom_{}".format(i)]["mass"] for i in range(self._num_atoms)])
         disp = np.einsum('ijk,j->ijk', disp, np.sqrt(masses))
 
         # normalize atomic displacements
+
         # [num_freq, num_atom, dim] -> [num_freq, num_atom, dim, dim] -> [num_freq, num_atom] -> [num_freq]
-        norm = np.sum(np.trace(np.einsum('kin, kim->kinm', disp, disp.conjugate()), axis1=2, axis2=3), axis=0)
+        norm = np.sum(np.trace(np.einsum('kin, kim->kinm', disp, disp.conjugate()), axis1=2, axis2=3), axis=1)
+
         factor = 1.0 / np.sqrt(norm)
-        disp = np.einsum('jkl, k-> jkl', disp, factor)
+        disp = np.einsum('jkl, j-> jkl', disp, factor)
 
         # [num_freq, num_atom, dim] -> [num_atom, num_freq, dim]
         disp = np.transpose(a=disp, axes=(1, 0, 2))
